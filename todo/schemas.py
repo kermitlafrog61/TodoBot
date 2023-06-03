@@ -24,13 +24,3 @@ class TodoDetailSchema(BaseModel):
     class Config:
         orm_mode = True
         arbitrary_types_allowed = True
-
-# class PostCreateSchema(BaseModel):
-#     title: str
-#     description: Optional[str]
-#     year: date
-#     country: str
-#     genres: List[str]
-
-#     class Config:
-#         orm_mode = True
