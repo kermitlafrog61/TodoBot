@@ -12,12 +12,14 @@ from todo.models import Todo
 from todo.queries import (create_todo, destroy_todo, list_todos, retrieve_todo,
                           update_todo)
 
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
-
 logger = logging.getLogger(__name__)
+
+
 ENTER_TITLE = 0
 ENTER_DESCRIPTION = 1
 ENTER_DUE_DATE = 2
@@ -112,7 +114,7 @@ async def update_description(update, context):
         return ENTER_DESCRIPTION
 
 
-async def description(update, context):
+async def handle_description(update, context):
     id = context.user_data['id']
     update_todo(id, 'description', update.message.text)
     await retrieve(update, context, id)
@@ -120,7 +122,7 @@ async def description(update, context):
     return ConversationHandler.END
 
 
-async def update_due(update, context):
+async def update_due_date(update, context):
     logger.info('Due')
     action, id = update.callback_query.data.split('-')
     context.user_data['id'] = id
@@ -132,7 +134,7 @@ async def update_due(update, context):
         return ENTER_DUE_DATE
 
 
-async def due_date(update, context):
+async def handle_due_date(update, context):
     id = context.user_data['id']
     update_todo(id, 'due', update.message.text)
     await retrieve(update, context, id)
@@ -174,16 +176,16 @@ if __name__ == '__main__':
             update_description, pattern='description-*')],
         states={
             ENTER_DESCRIPTION: [MessageHandler(
-                filters.TEXT & ~filters.COMMAND, description)],
+                filters.TEXT & ~filters.COMMAND, handle_description)],
         },
         fallbacks=[],
     )
 
     due_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(update_due, pattern='due-*')],
+        entry_points=[CallbackQueryHandler(update_due_date, pattern='due-*')],
         states={
             ENTER_DUE_DATE: [MessageHandler(
-                filters.TEXT & ~filters.COMMAND, due_date)],
+                filters.TEXT & ~filters.COMMAND, handle_due_date)],
         },
         fallbacks=[],
     )
