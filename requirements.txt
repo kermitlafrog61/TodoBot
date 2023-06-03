@@ -1,0 +1,6 @@
+peewee
+psycopg2-binary
+pydantic
+pydantic[dotenv]
+python-telegram-bot
+redis
