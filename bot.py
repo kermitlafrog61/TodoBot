@@ -136,7 +136,7 @@ async def update_due_date(update, context):
 
 async def handle_due_date(update, context):
     id = context.user_data['id']
-    update_todo(id, 'due', update.message.text)
+    update_todo(id, 'due_to', update.message.text)
     await retrieve(update, context, id)
     context.user_data.clear()
     return ConversationHandler.END

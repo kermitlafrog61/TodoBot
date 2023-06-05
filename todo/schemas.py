@@ -19,7 +19,7 @@ class TodoDetailSchema(BaseModel):
     description: Optional[str]
     completed: Optional[str]
     created_at: datetime
-    due_to: Optional[str]
+    due_to: Optional[datetime]
 
     class Config:
         orm_mode = True
