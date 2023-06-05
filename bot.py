@@ -163,7 +163,10 @@ if __name__ == '__main__':
     app = ApplicationBuilder().token(settings.TG_TOKEN).build()
 
     create_handler = ConversationHandler(
-        entry_points=[MessageHandler(filters.Text(['Create todo']), create)],
+        entry_points=[
+            MessageHandler(filters.Text(['Create todo']), create),
+            CommandHandler('create', create),
+        ],
         states={
             ENTER_TITLE: [MessageHandler(
                 filters.TEXT & ~filters.COMMAND, complete_create)]
@@ -193,7 +196,6 @@ if __name__ == '__main__':
     app.add_handlers([
         CommandHandler('start', start),
         CommandHandler('list', list),
-        CommandHandler('create', create),
         MessageHandler(filters.Text(['All todos']), list),
         CallbackQueryHandler(retrieve, pattern='retrieve-*'),
         CallbackQueryHandler(update_completed, pattern='check-*'),
